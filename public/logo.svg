@@ -1,0 +1,40 @@
+<svg 
+  width="20" 
+  height="20" 
+  viewBox="0 0 20 20" 
+  fill="none" 
+  xmlns="http://www.w3.org/2000/svg"
+  className="text-primary-foreground"
+>
+
+  <rect width="20" height="20" fill="black" />
+  
+  <path 
+    d="M3 6C3 6 5.5 4 8 6C10.5 8 13 4 16 6C16.5 6.33 17 6.67 17 7" 
+    stroke="white" 
+    strokeWidth="1.5" 
+    strokeLinecap="round"
+    fill="none"
+  />
+  <path 
+    d="M3 10C3 10 5.5 8 8 10C10.5 12 13 8 16 10C16.5 10.33 17 10.67 17 11" 
+    stroke="white" 
+    strokeWidth="1.5" 
+    strokeLinecap="round"
+    fill="none"
+  />
+  <path 
+    d="M3 14C3 14 5.5 12 8 14C10.5 16 13 12 16 14C16.5 14.33 17 14.67 17 15" 
+    stroke="white" 
+    strokeWidth="1.5" 
+    strokeLinecap="round"
+    fill="none"
+  />
+  
+  <!-- Data points (warna putih untuk lingkaran) -->
+  <circle cx="3" cy="6" r="1.5" fill="white" />
+  <circle cx="8" cy="6" r="1.5" fill="white" />
+  <circle cx="16" cy="6" r="1.5" fill="white" />
+  <circle cx="3" cy="14" r="1.5" fill="white" />
+  <circle cx="16" cy="14" r="1.5" fill="white" />
+</svg>
