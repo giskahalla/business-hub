@@ -1,31 +1,44 @@
 'use client';
 
-import { Card, Box, TextField, InputAdornment, Select, MenuItem, CardContent, Button }from '@mui/material';
-import { Search, Filter, Plus, Building2, Mail, Phone } from 'lucide-react';
+import { Box, Grid }from '@mui/material';
+import { Input, Select, Option, Button, Card } from '@mui/joy';
+import { Filter, Plus, Building2, Mail, Phone, Download } from 'lucide-react';
+import { KeyboardArrowDown } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { MainButton, useDrawer } from '@/components';
 import CustomerTable from './table';
 import CustomerCU from './cu';
 
-import { CUSTOMER_STATUS } from '@/constants';
+import { CUSTOMER_STATUS, BTN_STYLE, CUSTOMER_COLUMN } from '@/constants';
 
-import { calculateSummary, formatCurrency } from '@/handler';
+import { calculateSummary, formatCurrency, tableFilter, handleExportExcel } from '@/handler';
 
 import { customer } from '@/services/redux/actions';
+
+const dataSource = (filteredInfo) => {
+  const customers = Object.values(useSelector((state) => state.customer.byID));
+
+  let data = customers
+  
+  return tableFilter(data, filteredInfo)
+}
 
 export default function Customers() {
 
   const { toggleDrawer } = useDrawer();
   const dispatch = useDispatch();
-  const { all: customers } = useSelector((state) => state.customer);
+
+  const customers = Object.values(useSelector((state) => state.customer.byID));
+
+  const [filteredInfo, setFilteredInfo] = useState({ status: 'all'})
 
   useEffect(() => {
-    dispatch(customer.get_customer_fetch());
+    dispatch(customer.get_customers_fetch());
   }, [dispatch]);
 
-  const cards = [
+  const cards = [ 
     {
       id: 1,
       title: 'Active Customers',
@@ -58,73 +71,74 @@ export default function Customers() {
     },
   ];
 
+  const filteredData = dataSource(filteredInfo)
+
   return (
     <div>
-      
-        <div className="flex justify-between border-b border-gray-200">
-            <div className="px-6 py-4">
-                <h2 className="text-[20px] font-bold">Customers</h2>
-                <p className="text-gray-500">Manage client relationships and business development</p>
-            </div>
-        </div>
-
         <Box sx={{ boxShadow: 'none' }} className='p-6'>
-                <div className="flex justify-between mb-4 w-full">
-                      <h2 className="card-title">Showing</h2>
-                      <MainButton variant="contained" title={'Add customer'} startIcon={<Plus/>} onClick={toggleDrawer}/>
-                </div>
-                <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 mb-4 h-20'>
-                  {cards.map((card, i) => (
-                    <Card key={i} style={{ borderRadius: '10px', boxShadow: '0 0 4px 0 rgba(0, 0, 0, 0.3)' }} sx={{ boxShadow: 'none' }}>
-                        <CardContent sx={{ height: '100%' }}>
-                          <div className="flex items-center space-x-3">
-                            {card.icon}
-                            <div>
-                              <p className="text-sm text-muted-foreground">{card.title}</p>
-                              <p className="text-xl font-semibold text-foreground">{card.description}</p>
-                            </div>
-                          </div>
-                        </CardContent>
-                    </Card>
-                  ))}
-                </div>
 
-                <Card variant='outlined' style={{ borderRadius: '10px', backgroundColor: '#ececf033' }} sx={{ boxShadow: 'none' }} className='flex items-center justify-between p-4 mb-4'>
-                      <TextField
-                          slotProps={{
-                              input: {
-                                  startAdornment: (
-                                  <InputAdornment position="start">
-                                      <Search />
-                                  </InputAdornment>
-                                  ),
-                              },
-                          }}
-                          className='bg-white border-0 w-3xl'
+                <Grid container justifyContent='space-between' className="mb-4">
+                    <div className="py-5">
+                        <h2 className="text-[20px] font-bold">Customers</h2>
+                        <p className="text-gray-500">Manage client relationships and business development</p>
+                    </div>
+                      <Grid container spacing={1} sx={{ alignItems: 'center' }}>
+                        <MainButton 
+                          variant="outlined" 
+                          title={'Export'} 
+                          startIcon={<Download/>} 
+                          style={{...BTN_STYLE.outlined, height: 42 }}
+                          onClick={() => handleExportExcel(filteredData, CUSTOMER_COLUMN, 'customers')}
+                        />
+                        <MainButton title={'Add customer'} startIcon={<Plus/>} onClick={toggleDrawer}/>
+                      </Grid>
+                </Grid>
+
+                <Grid container spacing={2} className='mb-4'>
+                  {cards.map((card, i) => (
+                    <Grid key={i} size={4}>
+                      <Card orientation="horizontal" variant='outlined' key={i} style={{ boxShadow: '0 0 2px 0 rgba(0, 0, 0, 0.1)' }}>
+                          <Grid container className="items-center space-x-3">
+                              {card.icon}
+                              <div>
+                                <p className="text-sm text-muted-foreground">{card.title}</p>
+                                <p className="text-xl font-semibold text-foreground">{card.description}</p>
+                              </div>
+                          </Grid>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+
+                <Card variant='outlined' orientation="horizontal" style={{ marginTop: 20}}>
+                       <Input
+                          variant="soft"
                           placeholder='Search customers, companies, and emails...'
-                          size="small"
-                          variant="outlined"
+                          className='w-3xl'
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter") {
+                              setFilteredInfo(prev => ({ ...prev, search: event.target.value }))
+                            }
+                          }}
                       />
                       <Select
-                          size='small'
+                          indicator={<KeyboardArrowDown />} 
+                          variant="plain"
                           className='w-48 px-4'
-                          style={{ backgroundColor: '#ececf033' }}
-                          sx={{
-                            "& fieldset": { border: "none" }, 
-                          }}
-                          defaultValue={'all'}
+                          value={filteredInfo.status}
+                          onChange={(event, value) => setFilteredInfo(prev => ({ ...prev, status: value }))}
                       >
                         {Object.values(CUSTOMER_STATUS).map((s) => (
-                          <MenuItem value={s.value} key={s.value}>{s.label}</MenuItem>
+                          <Option value={s.value} key={s.value}>{s.label}</Option>
                         ))}
                     </Select>
-                    <Button variant="outlined" disabled className='h-10' style={{ backgroundColor: 'white' }}>
+                    <Button variant="outlined" disabled className='h-10' >
                       <Filter className="h-4 w-4" />
                     </Button>
                 </Card>
          </Box>
 
-         <CustomerTable customers={customers}/>
+         <CustomerTable filteredData={filteredData} sort='updatedAt'/>
          <CustomerCU />
     </div>
   );

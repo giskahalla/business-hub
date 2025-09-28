@@ -1,3 +1,3 @@
 export * from './customer'
-export * from './dashboard'
-export * from './general'
+export * from './table'
+export * from './export'

@@ -9,7 +9,7 @@ export const MainButton = (props) => {
     return (
         <Button
             variant={ variant || "contained" } 
-            style={{ backgroundColor: style?.bg || 'black', color: style?.color || '#FFFFFF', textTransform: 'none', border: '1px solid #0000001a',  ...style }}
+            style={{ backgroundColor: style?.bg || 'black', color: style?.color || '#FFFFFF', textTransform: 'none', border: '1px solid #0000001a', height: style?.color || '42px', ...style }}
             startIcon={startIcon}
             onClick={onClick}
             {...props}

@@ -1,0 +1,6 @@
+update 28/09/25
+
+- Completed "Add" and "Update" functionality for customer
+- Added "Project" page to the app
+- Implemented filter functionality for both Customer and Project tables
+- Refactored almost all code for better structure and maintainability.

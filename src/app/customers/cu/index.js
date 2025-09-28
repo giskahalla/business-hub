@@ -1,20 +1,32 @@
 'use client';
 
-import { Drawer, Box, FormControl, TextField, Grid, Select, MenuItem, Typography } from "@mui/material"
-import { useState } from "react"
+import { Drawer, Box, Grid } from "@mui/material"
+import { FormControl, FormLabel, Input, Textarea } from "@mui/joy"
+import { useState, useEffect } from "react"
+import { useDispatch } from "react-redux";
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
+// import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css';
 
 import { useDrawer, MainButton } from "@/components";
 
-import { CUSTOMER_STATUS, BTN_STYLE } from "@/constants";
+import { BTN_STYLE } from "@/constants";
+
+import { create_customer_fetch, update_customer_fetch } from "@/services/redux/actions/customer";
 
 import '../../globals.css';
 
-export default function CustomerCU({ type, customer }) {
+export default function CustomerCU() {
 
-    const { toggleDrawer, openDrawer } = useDrawer();
+    const dispatch = useDispatch()
+
+    const { toggleDrawer, openDrawer, data, updateData } = useDrawer();
+
+    const { action } = data || {}
 
     const [values, setValues] = useState({
-        fullName: "",
+        name: "",
         company: "",
         email: "",
         contact: "",
@@ -22,127 +34,134 @@ export default function CustomerCU({ type, customer }) {
         address: "",
     });
 
-     const handleChange = (e) => {
-        const { name, value } = e.target;
+    const handleEmpty = () => {
+        setValues({ name: "", company: "", email: "", contact: "", address: ""}); 
+    }
+
+    useEffect(() => {
+        if(action === 'edit' && data){
+            setValues(data)
+        } else {
+            handleEmpty()
+        }
+    }, [action, data])
+
+    const handleChange = (e) => {
+        const { name, value } = e.target
         setValues({ ...values, [name]: value});
     };
 
+    const handleChangePhone = (val) => {
+        setValues({ ...values, contact: val});
+    };
+
+    const onClose =  () => {
+        updateData(null)
+        handleEmpty()
+        toggleDrawer();
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("values:", values);
+        const { action, ...rest } = values
+        if(action === 'edit'){
+            dispatch(update_customer_fetch(rest))
+        } else {
+            dispatch(create_customer_fetch(rest))
+        }
+        onClose()
     };
 
     return (
-        <Drawer open={openDrawer} anchor="right">
+        <Drawer open={openDrawer} anchor="right" onClose={onClose}>
             <Box
                 sx={{ width: 450, p: 3, height: '90%' }}
                 >
-                    <h2 className="font-bold text-xl">{type === 'edit' ? 'Edit Customer' : 'Add New Customer'}</h2>
-                    <p>{type === 'edit' ? `Update details for ${customer?.customer_name}` : 'Add a new customer to your client database' }</p>
+                    <h2 className="font-bold text-xl">{action === 'edit' ? 'Edit Customer' : 'Add New Customer'}</h2>
+                    <p>{action === 'edit' ? `Update details for ${data?.name}` : 'Add a new customer to your client database' }</p>
 
                     <form autoComplete="off" onSubmit={handleSubmit} className="flex flex-col h-full justify-between mt-8">
+
                         <Grid container spacing={2}>  
                             <Grid size={12} item>
-                                <Typography variant="body2" fontWeight="bold" mb={0.5}>
-                                    Full Name
-                                </Typography>
-                                <TextField
-                                    fullWidth
-                                    placeholder="Enter customer's full name"
-                                    name="name"
-                                    value={values.name}
-                                    onChange={handleChange}
-                                    className="bg-gray-50"
-                                    // required
-                                />
-                            </Grid>
-
-                            <Grid size={12} item>
-                                <Typography variant="body2" fontWeight="bold" mb={0.5}>
-                                    Company
-                                </Typography>
-                                <TextField
-                                    fullWidth
-                                    placeholder="Enter company name"
-                                    name="company"
-                                    value={values.company}
-                                    onChange={handleChange}
-                                    className="bg-gray-50 border border-gray-200 rounded"
-                                    // required
-                                />
-                            </Grid>
-
-                            <Grid size={12} item>
-                                <Typography variant="body2" fontWeight="bold" mb={0.5}>
-                                    Email Address
-                                </Typography>
-                                <TextField
-                                    fullWidth
-                                    placeholder="customer@company.com"
-                                    name="email"
-                                    type="email"
-                                    value={values.email}
-                                    onChange={handleChange}
-                                    className="bg-gray-50 border border-gray-200 rounded"
-                                    // required
-                                />
-                            </Grid>
-
-                            <Grid size={6} item>
-                                <Typography variant="body2" fontWeight="bold" mb={0.5}>
-                                    Phone Number
-                                </Typography>
-                                <TextField
-                                    type="number"
-                                    fullWidth
-                                    placeholder="621234567"
-                                    name="contact"
-                                    value={values.contact}
-                                    onChange={handleChange}
-                                    className="bg-gray-50 border border-gray-200 rounded"
-                                    // required
-                                />
-                            </Grid>
-
-                            <Grid size={6} item>
-                                <Typography variant="body2" fontWeight="bold" mb={0.5}>
-                                    Status
-                                </Typography>
-                                <FormControl fullWidth 
-                                // required
-                                >
-                                    <Select
-                                        name="status"
-                                        value={values.status}
+                                <FormControl required>
+                                    <FormLabel sx={{ fontWeight: 600 }}>Name</FormLabel>
+                                    <Input
+                                        variant="plain"
+                                        value={values.name}
                                         onChange={handleChange}
-                                        className="bg-gray-50 border border-gray-200 rounded"
-                                        >
-                                            {Object.values(CUSTOMER_STATUS).map((status) => (
-                                                <MenuItem key={status.label} value={status.value}>{status.label}</MenuItem>
-                                            ))}
-                                    </Select>
+                                        placeholder="Enter customer's full name"
+                                        name="name"
+                                        className="border border-gray-200"
+                                        sx={{ '--Input-minHeight': '50px', '--Input-radius': '6px' }}
+                                    />
                                 </FormControl>
                             </Grid>
 
                             <Grid size={12} item>
-                                <Typography variant="body2" fontWeight="bold" mb={0.5}>
-                                    Address
-                                </Typography>
-                                <TextField
-                                    fullWidth
-                                    name="address"
-                                    value={values.address}
-                                    onChange={handleChange}
-                                    className="bg-gray-50 border border-gray-200 rounded"
-                                    // required
-                                    // multiline
-                                />
+                                <FormControl required>
+                                    <FormLabel sx={{ fontWeight: 600 }}>Company</FormLabel>
+                                    <Input
+                                        variant="plain"
+                                        placeholder="Enter company name"
+                                        name="company"
+                                        value={values.company}
+                                        onChange={handleChange}
+                                        className="border border-gray-200"
+                                        sx={{ '--Input-minHeight': '50px', '--Input-radius': '6px' }}
+                                    />
+                                </FormControl>
+                            </Grid>
+
+                            <Grid size={12} item>
+                                <FormControl required>
+                                    <FormLabel sx={{ fontWeight: 600 }}>Email Address</FormLabel>
+                                    <Input
+                                        variant="plain"
+                                        placeholder="customer@company.com"
+                                        name="email"
+                                        type="email"
+                                        value={values.email}
+                                        onChange={handleChange}
+                                        className="border border-gray-200"
+                                        sx={{ '--Input-minHeight': '50px', '--Input-radius': '6px' }}
+                                    />
+                                </FormControl>
+                            </Grid>
+
+                            <Grid size={12} item>
+                                <FormControl required>
+                                    <FormLabel sx={{ fontWeight: 600 }}>Phone Number</FormLabel>
+                                    <PhoneInput
+                                        inputProps={{
+                                            required: true
+                                        }}
+                                        value={values.contact}
+                                        onChange={handleChangePhone}
+                                        inputStyle={{ height: 50, width: '100%', background: '#fbfcfe', borderColor: '#ebe6e7' }}
+                                        buttonStyle={{ background: '#fbfcfe', borderColor: '#ebe6e7' }}
+                                    />
+                                </FormControl>
+                            </Grid>
+
+                            <Grid size={12} item>
+                                <FormControl required>
+                                    <FormLabel sx={{ fontWeight: 600 }}>Address</FormLabel>
+                                    <Textarea
+                                        variant="plain"
+                                        name="address"
+                                        value={values.address}
+                                        onChange={handleChange}
+                                        className="border border-gray-200"
+                                        minRows={2}
+                                    />
+                                </FormControl>
                             </Grid>
                         </Grid>
 
                         <div style={{ display: 'flex', gap: 10, textAlign: "right", marginTop: 20 }}>
                             <MainButton type="submit" title='Submit' />
-                            <MainButton variant="outlined" onClick={toggleDrawer} title='Cancel' style={{...BTN_STYLE.outlined }}/>
+                            <MainButton variant="outlined" onClick={onClose} title='Cancel' style={{...BTN_STYLE.outlined }}/>
                         </div>
 
                     </form>

@@ -19,8 +19,8 @@ export const calculateSummary = (customers) => {
   const activeCustomers = customers?.filter(c => c?.status === 1).length;
 
   return {
-    total_revenue: totalRevenue,
-    average_spend: averageSpend,
-    active_customers: activeCustomers
+    total_revenue: totalRevenue || 0,
+    average_spend: averageSpend || 0,
+    active_customers: activeCustomers || 0
   };
 }

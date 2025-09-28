@@ -3,22 +3,22 @@ import { Alert } from '@mui/material';
 import * as API from '@/services/api';
 
 
-export const get_customers_fetch = () => async (dispatch) => {
-  API.getCustomers()
+export const get_projects_fetch = () => async (dispatch) => {
+  API.getProjects()
   .then((info) => {
-    const { customers } = info;
-    dispatch(get_customers_success(customers));
+    const { projects } = info;
+    dispatch(get_projects_success(projects));
   }).catch((error) => {
-    console.error("Error fetching customers:", error.message);
+    console.error("Error fetching projects:", error.message);
       MessageEvent({ severity: 'error', children: <Alert severity="error">{error}</Alert> });
   });
 }
 
 
-const get_customers_success = (customers) => {
+const get_projects_success = (projects) => {
     return {
-        type: "GET_CUSTOMERS",
-        customers
+        type: "GET_PROJECTS",
+        projects
     }
 };
 
