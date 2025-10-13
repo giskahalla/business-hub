@@ -16,18 +16,18 @@ export const project = (state = initialState, action) => {
           },
         };
     }
-    // case 'UPDATE_CUSTOMER': {
-    //     const { customer } = action;
-    //     const { id } = customer
+    case 'UPDATE_PROJECT': {
+        const { project } = action;
+        const { id } = project
 
-    //     return {
-    //       ...state,
-    //       byID: {
-    //         ...state.byID,
-    //         [id]: customer
-    //       },
-    //     };
-    // }
+        return {
+          ...state,
+          byID: {
+            ...state.byID,
+            [id]: project
+          },
+        };
+    }
     default:
       return state;
   }

@@ -1,26 +1,33 @@
 'use client';
 
 import { Box, Grid }from '@mui/material';
-import { Input, Select, Option, Button, Card } from '@mui/joy';
-import { Filter, Plus, Download } from 'lucide-react';
+import { Input, Select, Option, Card } from '@mui/joy';
+import { Plus, Download } from 'lucide-react';
 import { KeyboardArrowDown } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
 import { MainButton, useDrawer } from '@/components';
-import CustomerTable from './table';
+import ProjectTable from './table';
 import ProjectCU from './cu';
+import ModalUpdateTask from './modalUpdateTask';
 
-import { PROJECT_STATUS, BTN_STYLE, PROJECT_COLUMN } from '@/constants';
+import { PROJECT_STATUS, BTN_STYLE, PROJECT_COLUMN, PROJECT_PRIORITY } from '@/constants';
 
 import { tableFilter, handleExportExcel } from '@/handler';
 
-import { project } from '@/services/redux/actions';
+import { project, company, team } from '@/services/redux/actions';
 
 const dataSource = (filteredInfo) => {
   const projects = Object.values(useSelector((state) => state.project.byID));
+  const companies = useSelector((state) => state.company.byID);
+  const teams = useSelector((state) => state.team.byID);
 
-  let data = projects
+  let data = projects.map((p) => ({
+    ...p,
+    company_name: companies[p.client]?.name || 'N/A',
+    assignee_name: teams[p.assignee]?.name || '-',
+  }))
   
   return tableFilter(data, filteredInfo)
 }
@@ -30,20 +37,21 @@ export default function Projects() {
   const { toggleDrawer } = useDrawer();
   const dispatch = useDispatch();
 
-  const [filteredInfo, setFilteredInfo] = useState({ status: 'all' })
+  const [filteredInfo, setFilteredInfo] = useState({ status: 'all', priority: 'all' })
 
   useEffect(() => {
-    dispatch(project.get_projects_fetch());
+    dispatch(project.get_projects_request());
+    dispatch(company.get_companies_request());
+    dispatch(team.get_teams_request());
   }, [dispatch]);
-
 
   const filteredData = dataSource(filteredInfo)
 
   return (
     <div>
-        <Box sx={{ boxShadow: 'none' }} className='p-6'>
+        <Box sx={{ boxShadow: 'none' }} className='px-6 pb-6'>
                 <Grid container justifyContent='space-between' className="mb-4">
-                      <div className="py-5">
+                      <div className="py-6">
                           <h2 className="text-[20px] font-bold">Projects</h2>
                           <p className="text-gray-500">Track project progress, budgets, and deliverables</p>
                       </div>
@@ -59,9 +67,9 @@ export default function Projects() {
                       </Grid>
                 </Grid>
 
-                <Card variant='outlined' orientation="horizontal" style={{ marginTop: 20}}>
+                <Card variant='outlined' orientation="horizontal" style={{ marginTop: 20}} sx={{ backgroundColor: 'white'}}>
                         <Input
-                          variant="soft"
+                          variant="plain"
                           placeholder='Search projects, clietns, and assignees...'
                           className='w-3xl'
                           onKeyDown={(event) => {
@@ -73,22 +81,33 @@ export default function Projects() {
                       <Select
                           indicator={<KeyboardArrowDown />} 
                           variant="plain"
-                          className='w-48 px-4'
+                          className='w-40 px-4'
                           value={filteredInfo.status}
                           onChange={(event, value) => setFilteredInfo(prev => ({ ...prev, status: value }))}
                       >
+                        <Option value="all" key="all">All Status</Option>
                         {Object.values(PROJECT_STATUS).map((s) => (
                           <Option value={s.value} key={s.value}>{s.label}</Option>
                         ))}
-                    </Select>
-                    <Button variant="outlined" disabled className='h-10' >
-                      <Filter className="h-4 w-4" />
-                    </Button>
+                      </Select>
+                      <Select
+                          indicator={<KeyboardArrowDown />} 
+                          variant="plain"
+                          className='w-40 px-4'
+                          value={filteredInfo.priority}
+                          onChange={(event, value) => setFilteredInfo(prev => ({ ...prev, priority: value }))}
+                      >
+                        <Option value="all" key="all">All Priority</Option>
+                        {Object.values(PROJECT_PRIORITY).map((s) => (
+                          <Option value={s.value} key={s.value}>{s.label}</Option>
+                        ))}
+                      </Select>
                 </Card>
          </Box>
 
-         <CustomerTable filteredData={filteredData} sort='due_date'/>
+         <ProjectTable filteredData={filteredData} sort='due_date'/>
          <ProjectCU />
+         <ModalUpdateTask />
     </div>
   );
 }

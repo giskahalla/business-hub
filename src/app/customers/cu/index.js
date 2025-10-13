@@ -1,7 +1,7 @@
 'use client';
 
-import { Drawer, Box, Grid } from "@mui/material"
-import { FormControl, FormLabel, Input, Textarea } from "@mui/joy"
+import { Box, Grid } from "@mui/material"
+import { FormControl, FormLabel, Input, Textarea, Drawer } from "@mui/joy"
 import { useState, useEffect } from "react"
 import { useDispatch } from "react-redux";
 import PhoneInput from 'react-phone-input-2'
@@ -13,7 +13,7 @@ import { useDrawer, MainButton } from "@/components";
 
 import { BTN_STYLE } from "@/constants";
 
-import { create_customer_fetch, update_customer_fetch } from "@/services/redux/actions/customer";
+import { customer } from "@/services/redux/actions";
 
 import '../../globals.css';
 
@@ -65,9 +65,9 @@ export default function CustomerCU() {
         e.preventDefault();
         const { action, ...rest } = values
         if(action === 'edit'){
-            dispatch(update_customer_fetch(rest))
+            dispatch(customer.update_customer_request(rest))
         } else {
-            dispatch(create_customer_fetch(rest))
+            dispatch(customer.create_customer_request(rest))
         }
         onClose()
     };

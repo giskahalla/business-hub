@@ -3,3 +3,5 @@ export * from './MainButton';
 export * from './Drawer'
 export * from './FormWrapper'
 export * from './TableList'
+export * from './ModalStatus'
+export * from './Modal'

@@ -2,7 +2,7 @@
 
 import { Provider } from 'react-redux'
 
-import { DrawerProvider } from "@/components";
+import { DrawerProvider, ModalProvider } from "@/components";
 import { Sidebar } from "@/components";
 
 import { store } from '@/services/store';
@@ -19,7 +19,9 @@ export default function Main({ children }) {
         </div>
         <div className="flex-1 h-screen">
             <DrawerProvider>
+            <ModalProvider>
                 {children}
+            </ModalProvider>
             </DrawerProvider>
         </div>
         </div>

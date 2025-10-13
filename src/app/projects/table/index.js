@@ -13,7 +13,7 @@ const columns = [
   { 
     field: 'action', 
     headerName: 'Action', 
-    width: 100,
+    width: 75,
     renderCell: (rec) => {
       const { row } = rec
       return (
@@ -31,7 +31,7 @@ const columns = [
 const ProjectTable = (props) => {
 
   return (
-    <Card variant='outlined' style={{ borderRadius: '10px' }} className='mx-6 px-4'>
+    <Card variant='outlined' style={{ borderRadius: '10px' }} className='mx-6 px-4' sx={{ backgroundColor: 'white'}}>
 
       <span className='font-semibold mt-2 ml-3'>Projects({props?.filteredData?.length})</span>
 

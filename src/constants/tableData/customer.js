@@ -11,7 +11,7 @@ export const CUSTOMER_COLUMN = [
   { 
     field: 'name', 
     headerName: 'Customer', 
-    width: 270, 
+    width: 280, 
     sortable: false,
     renderCell: (rec) => {
       const { row } = rec
@@ -31,7 +31,7 @@ export const CUSTOMER_COLUMN = [
   { 
     field: 'company', 
     headerName: 'Company', 
-    width: 180,
+    width: 200,
     sortable: false,
   },
   { 

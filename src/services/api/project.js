@@ -8,11 +8,11 @@ export const getProjects = async () => {
 }
 
 export const createProject = async (data) => {
-  const response = await axios.post(`${CONFIG.API_BASE_URL}/create/customer`, { data });
+  const response = await axios.post(`${CONFIG.API_BASE_URL}/create/project`, { data });
   return response.data;
 }
 
 export const updateProject = async (data) => {
-  const response = await axios.post(`${CONFIG.API_BASE_URL}/update/customer`, { data });
+  const response = await axios.post(`${CONFIG.API_BASE_URL}/update/project`, { data });
   return response.data;
 }

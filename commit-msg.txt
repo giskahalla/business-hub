@@ -1,6 +1,6 @@
-update 28/09/25
+update 13/10/25
 
-- Completed "Add" and "Update" functionality for customer
-- Added "Project" page to the app
-- Implemented filter functionality for both Customer and Project tables
-- Refactored almost all code for better structure and maintainability.
+- Create and update the Status Modal and its functionality
+- Build the Project Creation Drawer and its functionality
+- Create and update the Task Progress Modal and its functionality
+- Redesign the Customer and Project Layouts

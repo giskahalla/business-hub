@@ -30,10 +30,16 @@ body {
   padding: 12px !important; 
 } 
 
-.MuiTextField-root .MuiOutlinedInput-notchedOutline {
-  border-color: #e8e8e8;
-}
-
+.MuiTextField-root .MuiOutlinedInput-notchedOutline,
 .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
   border-color: #e8e8e8;
 }
+
+.MuiSelect-root{
+  border: 1px solid #e8e8e8;
+  height: 50px;
+}
+
+
+
+

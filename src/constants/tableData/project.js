@@ -12,7 +12,7 @@ export const PROJECT_COLUMN = [
     field: 'name', 
     headerName: 'Project', 
     sortable: false,
-    width: 180, 
+    width: 200, 
     renderCell: (rec) => {
       const { row } = rec
       return (
@@ -20,7 +20,7 @@ export const PROJECT_COLUMN = [
           <Stack>
             <Typography variant="subtitle2">{row.name}</Typography>
             <Typography variant="body2" color="text.secondary">
-              {row.client}
+              {row.company_name}
             </Typography>
           </Stack>
         </div>
@@ -86,17 +86,22 @@ export const PROJECT_COLUMN = [
     sortable: true,
   },
   { 
-    field: 'assignee', 
+    field: 'assignee_name', 
     headerName: 'Assignee', 
     sortable: false,
-    width: 180, 
+    width: 200, 
     renderCell: (rec) => {
       const { row } = rec
       return (
         <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <Avatar src={row.avatar} alt={row.assignee_name} />
-          <Typography variant="subtitle2">{row.assignee_name}</Typography>
-          <br/>
+          {row.assignee_name !== '-' ?
+            <>
+              <Avatar src={row.avatar} alt={row.assignee_name} />
+              <Typography variant="subtitle2">{row.assignee_name}</Typography>
+              <br/>
+            </>
+            : "-"
+          }
         </div> 
       )
     }

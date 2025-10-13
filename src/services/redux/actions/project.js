@@ -3,7 +3,7 @@ import { Alert } from '@mui/material';
 import * as API from '@/services/api';
 
 
-export const get_projects_fetch = () => async (dispatch) => {
+export const get_projects_request = () => async (dispatch) => {
   API.getProjects()
   .then((info) => {
     const { projects } = info;
@@ -22,33 +22,33 @@ const get_projects_success = (projects) => {
     }
 };
 
-export const create_customer_fetch = (data) => async (dispatch) => {
+export const create_project_request = (data) => async (dispatch) => {
   API.createCustomer(data)
   .then((info) => {
-    const { customer } = info;
-    dispatch(update_customers_success(customer));
+    const { project } = info;
+    dispatch(update_project_success(project));
   }).catch((error) => {
-    console.error("Error update customer:", error);
+    console.error("Error update project:", error);
       MessageEvent({ severity: 'error', children: <Alert severity="error">{error}</Alert> });
   });
 }
 
-export const update_customer_fetch = (data) => async (dispatch) => {
-  API.updateCustomer(data)
+export const update_project_request = (data) => async (dispatch) => {
+  API.updateProject(data)
   .then((info) => {
-    const { customer } = info;
-    dispatch(update_customers_success(customer));
+    const { project } = info;
+    dispatch(update_project_success(project));
   }).catch((error) => {
-    console.error("Error update customer:", error.message);
+    console.error("Error update project:", error.message);
       MessageEvent({ severity: 'error', children: <Alert severity="error">{error}</Alert> });
   });
 }
 
 
-const update_customers_success = (customer) => {
+const update_project_success = (project) => {
     return {
-        type: "UPDATE_CUSTOMER",
-        customer
+        type: "UPDATE_PROJECT",
+        project
     }
 };
 
