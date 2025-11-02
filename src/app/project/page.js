@@ -16,12 +16,16 @@ import { PROJECT_STATUS, BTN_STYLE, PROJECT_COLUMN, PROJECT_PRIORITY } from '@/c
 
 import { tableFilter, handleExportExcel } from '@/handler';
 
-import { project, company, team } from '@/services/redux/actions';
+import { project, customer, team } from '@/services/redux/actions';
 
 const dataSource = (filteredInfo) => {
   const projects = Object.values(useSelector((state) => state.project.byID));
   const companies = useSelector((state) => state.company.byID);
   const teams = useSelector((state) => state.team.byID);
+
+  if (projects?.length === 0) {
+    return []; 
+  }
 
   let data = projects.map((p) => ({
     ...p,
@@ -41,11 +45,12 @@ export default function Projects() {
 
   useEffect(() => {
     dispatch(project.get_projects_request());
-    dispatch(company.get_companies_request());
+    dispatch(customer.get_customers_request());
     dispatch(team.get_teams_request());
   }, [dispatch]);
 
   const filteredData = dataSource(filteredInfo)
+  console.log('filteredData', filteredData)
 
   return (
     <div>

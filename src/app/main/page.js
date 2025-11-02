@@ -1,6 +1,8 @@
 'use client';
 
 import { Provider } from 'react-redux'
+import { Suspense } from 'react';
+import { CircularProgress } from '@mui/joy';
 
 import { DrawerProvider, ModalProvider } from "@/components";
 import { Sidebar } from "@/components";
@@ -20,7 +22,9 @@ export default function Main({ children }) {
         <div className="flex-1 h-screen">
             <DrawerProvider>
             <ModalProvider>
+              <Suspense fallback={<CircularProgress />}>
                 {children}
+              </Suspense>
             </ModalProvider>
             </DrawerProvider>
         </div>

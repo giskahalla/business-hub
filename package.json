@@ -21,8 +21,9 @@
     "@mui/x-data-grid-premium": "^8.12.1",
     "@reduxjs/toolkit": "^2.9.0",
     "axios": "^1.12.2",
+    "dayjs": "^1.11.19",
     "lucide-react": "^0.542.0",
-    "next": "15.5.0",
+    "next": "^16.0.1",
     "next-redux-wrapper": "^8.1.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
@@ -34,9 +35,12 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/node": "^24.9.2",
+    "@types/react": "^19.2.2",
     "env-cmd": "^11.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.5.0",
-    "tailwindcss": "^4"
+    "tailwindcss": "^4",
+    "typescript": "^5.9.3"
   }
 }

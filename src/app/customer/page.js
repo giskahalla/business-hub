@@ -20,6 +20,10 @@ import { customer } from '@/services/redux/actions';
 const dataSource = (filteredInfo) => {
   const customers = Object.values(useSelector((state) => state.customer.byID));
 
+  if (customers?.length === 0) {
+    return []; 
+  }
+
   let data = customers
   
   return tableFilter(data, filteredInfo)
@@ -43,14 +47,14 @@ export default function Customers() {
       id: 1,
       title: 'Active Customers',
       total: calculateSummary(customers).active_customers,
-      description: 'in progress',
+      description: 'currently available',
       icon: (<RefreshCw className="size-5" />),
     },
     {
       id: 2,
-      title: 'Total Revenue',
+      title: 'Total Spent',
       total: formatCurrency(calculateSummary(customers).total_revenue),
-      description: 'combined budget',
+      description: 'all customer spending',
       icon:( <DollarSign className="size-5" />)
     },
   ];

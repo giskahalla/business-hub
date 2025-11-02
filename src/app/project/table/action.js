@@ -12,7 +12,7 @@ export const menuItems = (row) => {
 
     return (
          <Menu size="sm">
-            <MenuItem><Link href={`/projects/detail/${row.id}`} passHref>View Detail</Link></MenuItem>
+            <MenuItem><Link href={`/project/detail/${row.id}`} passHref>View Detail</Link></MenuItem>
             <MenuItem onClick={() => { toggleDrawer(); updateData({...row, action: 'edit'})}}>Edit project</MenuItem>
             <MenuItem disabled={!row?.tasks || status > 2 } onClick={() => { handleOpen(); updateContent({ ...row })}} >Update task</MenuItem>
             <MenuItem disabled={status !== 1}>Mark as in progress</MenuItem>

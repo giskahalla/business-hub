@@ -1,9 +1,10 @@
 
 
-import { Users, LayoutDashboard, FolderOpen } from 'lucide-react'
+import { Users, LayoutDashboard, FolderOpen, UserCheck } from 'lucide-react'
 
   export const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'customers', label: 'Customers', icon: Users },
-    { id: 'projects', label: 'Projects', icon: FolderOpen },
+    { id: 'customer', label: 'Customers', icon: UserCheck },
+    { id: 'project', label: 'Projects', icon: FolderOpen },
+    { id: 'team', label: 'Teams', icon: Users },
   ]

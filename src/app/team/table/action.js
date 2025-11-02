@@ -15,8 +15,8 @@ export const menuItems = (row) => {
 
     return (
          <Menu size="sm">
-            <MenuItem><Link href={`/customers/detail/${row.id}`} passHref>View detail</Link></MenuItem>
-            <MenuItem onClick={() => { toggleDrawer(); updateData({...row, action: 'edit'})}}>Edit customer</MenuItem>
+            <MenuItem><Link href={`/team/detail/${row.id}`} passHref>View detail</Link></MenuItem>
+            <MenuItem onClick={() => { toggleDrawer(); updateData({...row, action: 'edit'})}}>Edit member</MenuItem>
             <MenuItem disabled={status === 1} onClick={() => { handleOpen(); updateContent(STATUS_UPDATE_CONTENT(row, 'active')) }}>Mark as active</MenuItem>
             <MenuItem disabled={status === 2} onClick={() => { handleOpen(); updateContent(STATUS_UPDATE_CONTENT(row, 'inactive')) }}>Mark as inactive</MenuItem>
           </Menu>

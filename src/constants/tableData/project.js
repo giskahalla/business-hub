@@ -1,7 +1,8 @@
 'use client';
 
-import { Avatar, Typography, Stack }from '@mui/material';
-import { Chip } from '@mui/joy';
+import { Avatar, Typography, Stack, Box }from '@mui/material';
+import { Chip, LinearProgress } from '@mui/joy';
+import dayjs from 'dayjs';
 
 import { PROJECT_STATUS, PROJECT_PRIORITY } from '@/constants';
 
@@ -62,8 +63,16 @@ export const PROJECT_COLUMN = [
     sortable: false,
     renderCell: (rec) => {
       const { row } = rec
+      const done = row?.tasks?.filter(task => task.status)?.length || 0
+      const total = row?.tasks?.length || 0
+      const progress = total > 0 ? (done / total) * 100 : 0
       return (
-        <>{row?.summary?.total_projects}</>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%', marginTop: '2em' }}>
+          <LinearProgress determinate value={progress} color="neutral" sx={{ width: '100%' }} />
+          <Typography variant="body2" color="text.secondary" style={{ width: 40 }}>
+            {Math.round(progress)}%
+          </Typography>
+        </Box>
       )
     }
   },
@@ -83,7 +92,13 @@ export const PROJECT_COLUMN = [
     field: 'due_date', 
     headerName: 'Due Date', 
     width: 130,
-    sortable: true,
+    sortable: true, 
+    renderCell: (rec) => {
+      const { row } = rec
+      return (
+        <>{row?.due_date ? dayjs(row.due_date).format('DD/MM/YYYY') : '-'}</>
+      )
+    }
   },
   { 
     field: 'assignee_name', 

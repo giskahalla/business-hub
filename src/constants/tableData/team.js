@@ -4,14 +4,13 @@ import { Box, Avatar, Typography } from '@mui/material';
 import { Chip } from '@mui/joy';
 import dayjs from 'dayjs';
 
-import { CUSTOMER_STATUS } from '@/constants';
+import { MEMBER_STATUS } from '@/constants';
 
-import { formatCurrency } from '@/handler';
 
-export const CUSTOMER_COLUMN = [
+export const TEAM_COLUMN = [
   { 
     field: 'name', 
-    headerName: 'Customer', 
+    headerName: 'User Name', 
     width: 280, 
     sortable: false,
     renderCell: (rec) => {
@@ -30,12 +29,6 @@ export const CUSTOMER_COLUMN = [
     }
   },
   { 
-    field: 'company', 
-    headerName: 'Company', 
-    width: 200,
-    sortable: false,
-  },
-  { 
     field: 'status', 
     headerName: 'Status', 
     width: 130,
@@ -43,46 +36,46 @@ export const CUSTOMER_COLUMN = [
     renderCell: (rec) => {
       const { row } = rec
       return (
-        <Chip variant='soft' sx={{ ...CUSTOMER_STATUS?.[row?.status]?.style }}>
-          {CUSTOMER_STATUS?.[row?.status]?.label}
+        <Chip variant='soft' sx={{ ...MEMBER_STATUS?.[row?.status]?.style }}>
+          {MEMBER_STATUS?.[row?.status]?.label}
         </Chip>
       )
     }
   },
   { 
-    field: 'total', 
-    headerName: 'Total Spent', 
-    width: 130,
+    field: 'role', 
+    headerName: 'Role', 
+    width: 200,
     sortable: false,
-    renderCell: (rec) => {
-      const { row } = rec
-      return (
-        <>{formatCurrency(row?.spent)}</>
-      )
-    }
+  },
+  { 
+    field: 'department', 
+    headerName: 'Department', 
+    width: 200,
+    sortable: false,
   },
   { 
     field: 'projects', 
     headerName: 'Projects', 
     width: 130,
     sortable: false,
-    renderCell: (rec) => {
+    renderCell: (rec) => { 
       const { row } = rec
       return (
         <>{row?.projects?.length || '-'}</>
       )
     }
-  }, 
+  },
   { 
-    field: 'updatedAt', 
-    headerName: 'Last Update', 
+    field: 'joinedAt', 
+    headerName: 'Join Date', 
     width: 130,
-    sortable: true,
     renderCell: (rec) => {
       const { row } = rec
       return (
-        <>{dayjs(row?.updatedAt).format('DD/MM/YYYY')}</>
+        <>{dayjs(row?.joinedAt).format('DD/MM/YYYY')}</>
       )
-    }
+    },
+    sortable: true,
   },
 ];

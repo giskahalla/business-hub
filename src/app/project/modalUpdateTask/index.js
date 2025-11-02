@@ -1,7 +1,7 @@
 
 'use client';
 
-import { Box, Button, ModalDialog, Modal, Typography, List, ListItem, Checkbox } from '@mui/joy';
+import { Box, Button, ModalDialog, Modal, Typography, List, ListItem, Checkbox, Input } from '@mui/joy';
 import { useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 
@@ -17,12 +17,12 @@ export default function ModalUpdateTask() {
   const { open, handleOpen, content } = useModal();
 
   const [checked, setChecked] = useState(content?.tasks || []);
+  const [spent, setSpent] = useState(content?.spending || 0);
 
   useEffect(() => {
     setChecked(content?.tasks || [])
+    setSpent(content?.spending || 0)
   }, [content])
-
-  console.log(checked)
   
   const handleConfirm = () => {
     dispatch(project.update_project_request({ ...content, tasks: checked }))
@@ -47,7 +47,22 @@ export default function ModalUpdateTask() {
           })}
         >
           <Typography id="nested-modal-title" level="h2">
-            Update Project Progress
+            Update Project
+          </Typography>
+
+          <Typography level="h5" sx={{ fontWeight: '500' }}>
+            Total Spending
+          </Typography>
+          <Input
+            type="number"
+            variant="outlined"
+            value={content?.spending || ''}
+            onChange={(e) => setSpent(e.target.value)}
+            startDecorator="$"
+          />
+
+          <Typography level="h5" sx={{ fontWeight: '500' }}>
+            Progress
           </Typography>
           <List>
             {content?.tasks?.map((item, index) => (

@@ -1,6 +1,5 @@
-update 13/10/25
+update 02/11/25
 
-- Create and update the Status Modal and its functionality
-- Build the Project Creation Drawer and its functionality
-- Create and update the Task Progress Modal and its functionality
-- Redesign the Customer and Project Layouts
+- Add team module with table and detail views
+- Update functionality for project creation/edit form and update tasks & budget management
+- Refine customer details management

@@ -21,7 +21,7 @@ export default function ProjectCU() {
 
     const { toggleDrawer, openDrawer, data, updateData } = useDrawer();
 
-    const companies = Object.values(useSelector((state) => state.company.byID));
+    const customers = Object.values(useSelector((state) => state.customer.byID));
     const teams = Object.values(useSelector((state) => state.team.byID));
 
     const { action } = data || {}
@@ -31,6 +31,7 @@ export default function ProjectCU() {
         name: "",
         desc: '',
         priority: '',
+        budget: 0,
         client: '',
         assignee: '',
         start_date: '',
@@ -46,7 +47,7 @@ export default function ProjectCU() {
 
     useEffect(() => {
         if(action === 'edit' && data){
-            setValues(data)
+            setValues({...data, budget: data?.budget?.estimated || 0})
             setTaskList(data?.tasks || [])
         } else {
             handleEmpty()
@@ -67,12 +68,15 @@ export default function ProjectCU() {
     const handleSubmit = (e) => {
         if(values?.tasks?.length > 0){
             e.preventDefault();
-            const { action, ...rest } = values
+            
             if(action === 'edit'){
+                const { action, budget, ...rest } = values
                 dispatch(project.update_project_request(rest))
             } else {
+                const { action, ...rest } = values
                 dispatch(project.create_project_request(rest))
             }
+
             onClose()
         } else {
             alert("Please add at least one task")
@@ -137,7 +141,6 @@ export default function ProjectCU() {
                                         variant="plain"
                                         value={values.name}
                                         onChange={handleChange}
-                                        placeholder="Enter customer's full name"
                                         name="name"
                                         className="border border-gray-200"
                                         sx={{ '--Input-minHeight': '50px', '--Input-radius': '6px' }}
@@ -190,7 +193,7 @@ export default function ProjectCU() {
                                             setValues({ ...values, client: val});
                                         }}
                                     >
-                                        {companies.map((s) => (
+                                        {customers.map((s) => (
                                             <Option value={s.id} key={s.id}>{s.name}</Option>
                                         ))}
                                     </Select>
@@ -213,6 +216,23 @@ export default function ProjectCU() {
                                             <Option value={s.id} key={s.id}>{s.name}</Option>
                                         ))}
                                     </Select>
+                                </FormControl>
+                            </Grid>
+
+                            <Grid size={12} item>
+                                <FormControl required>
+                                    <FormLabel sx={{ fontWeight: 600 }}>Estimated Budget</FormLabel>
+                                    <Input
+                                        type="number"
+                                        variant="plain"
+                                        startDecorator="$"
+                                        value={values.budget}
+                                        onChange={handleChange}
+                                        name="budget"
+                                        className="border border-gray-200"
+                                        sx={{ '--Input-minHeight': '50px', '--Input-radius': '6px' }}
+                                        disabled={action === 'edit'}
+                                    />
                                 </FormControl>
                             </Grid>
 

@@ -7,6 +7,11 @@ export const getProjects = async () => {
   return response.data;
 }
 
+export const getProjectThruUserID = async (id) => {
+  const response = await axios.get(`${CONFIG.API_BASE_URL}/get/project/thru/userId`, {params: { id }});
+  return response.data;
+}
+
 export const createProject = async (data) => {
   const response = await axios.post(`${CONFIG.API_BASE_URL}/create/project`, { data });
   return response.data;

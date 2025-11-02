@@ -14,7 +14,6 @@ export const get_projects_request = () => async (dispatch) => {
   });
 }
 
-
 const get_projects_success = (projects) => {
     return {
         type: "GET_PROJECTS",
@@ -22,8 +21,26 @@ const get_projects_success = (projects) => {
     }
 };
 
+export const get_project_thru_userId_request = (id) => async (dispatch) => {
+  API.getProjectThruUserID(id)
+  .then((info) => {
+    const { projects } = info;
+    dispatch(get_project_thru_userId_success(projects));
+  }).catch((error) => {
+    console.error("Error fetching projects:", error.message);
+      MessageEvent({ severity: 'error', children: <Alert severity="error">{error}</Alert> });
+  });
+}
+
+const get_project_thru_userId_success = (projects) => {
+    return {
+        type: "GET_PROJECT_THRU_USERID",
+        projects
+    }
+};
+
 export const create_project_request = (data) => async (dispatch) => {
-  API.createCustomer(data)
+  API.createProject(data)
   .then((info) => {
     const { project } = info;
     dispatch(update_project_success(project));

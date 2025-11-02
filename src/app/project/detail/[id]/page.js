@@ -1,11 +1,12 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { ArrowLeft, Clock, Mail, Phone, MapPin, Calendar, Edit, Tag, User } from 'lucide-react';
-import { Card, Divider, Grid, Stack } from "@mui/material";
-import { Chip } from '@mui/joy';
+import { ArrowLeft, Clock, Mail, Phone, Calendar, Edit, Tag, User } from 'lucide-react';
+import { Card, Divider, Grid, Stack, Typography } from "@mui/material";
+import { Chip, LinearProgress } from '@mui/joy';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
+import dayjs from 'dayjs';
 
 import { MainButton, useDrawer } from '@/components';
 import CustomerCU from '../../cu';
@@ -17,7 +18,7 @@ import { formatCurrency } from '@/handler';
 export default function ProjectDetail() {
 
     const { byID: projects } = useSelector((state) => state.project);
-    const companies = useSelector((state) => state.company.byID);
+    const customers = useSelector((state) => state.customer.byID);
     const teams = useSelector((state) => state.team.byID);
 
     const param = useParams();  
@@ -26,11 +27,15 @@ export default function ProjectDetail() {
 
     const project = projects[id]
 
+    const done = project?.tasks?.filter(task => task.status)?.length || 0
+    const total = project?.tasks?.length || 0
+    const progress = total > 0 ? (done / total) * 100 : 0
+
   return (
      <div>
         <div className="flex items-center px-6 py-8 ">
             <div className='w-14 flex items-center'>
-                <Link href='/projects'>
+                <Link href='/project'>
                     <MainButton variant='outlined' icon={<ArrowLeft size={16}/>} style={{ minWidth: 40, height: 40, padding: '0 2px', ...BTN_STYLE.outlined }}/>
                 </Link>
             </div>
@@ -54,23 +59,28 @@ export default function ProjectDetail() {
                                 </Grid>
                                 <Grid size={6}>
                                     <span className='text-gray-500'>Status</span>
-                                    <p>
+                                    <div>
                                         <Chip variant='soft' sx={{ ...PROJECT_STATUS?.[project?.status]?.style }}>
                                             {PROJECT_STATUS?.[project?.status]?.label}
                                         </Chip>
-                                    </p>
+                                    </div>
                                 </Grid>
                                 <Grid size={6}>
                                     <span className='text-gray-500 2'>Priority</span>
-                                    <p>
+                                    <div>
                                         <Chip variant='soft' sx={{ ...PROJECT_PRIORITY?.[project?.priority]?.style }}>
                                             {PROJECT_PRIORITY?.[project?.priority]?.label}
                                         </Chip>
-                                    </p>
+                                    </div>
                                 </Grid>
                                 <Grid size={12}>
-                                    <span className='text-gray-500'>Progress</span>
-                                    <p>{project?.desc}</p>
+                                     <div className='w-full flex justify-between gap-2'>
+                                        <Typography>Progress</Typography>
+                                        <Typography color='text.secondary'>
+                                            {Math.round(progress)}% Complete ({done}/{total} tasks)
+                                        </Typography>
+                                    </div>
+                                        <LinearProgress determinate value={progress} color="neutral" sx={{ width: '100%' }} />
                                 </Grid>
                             </Grid>
                     </Card>
@@ -83,14 +93,14 @@ export default function ProjectDetail() {
                                     <Mail className="mr-5 size-5 text-gray-500"/>
                                     <div>
                                         <span className='text-gray-500'>Email</span>
-                                        <p>{project?.email}</p>
+                                        <p className='font-medium'>{project?.email}</p>
                                     </div>
                                 </Grid>
                                 <Grid container className="flex items-center" >
                                     <Phone className="mr-5 size-5 text-gray-500"/>
                                     <div>  
                                         <span className='text-gray-500'>Phone</span>
-                                        <p>{project?.contact}</p>
+                                        <p className='font-medium'>{project?.contact}</p>
                                     </div>
                                 </Grid>
                             </Stack>
@@ -107,14 +117,14 @@ export default function ProjectDetail() {
                                     <Calendar className="mr-5 size-5 text-gray-500"/>
                                     <div>
                                         <span className='text-gray-500'>Start Date</span>
-                                        <p>{project?.start_date}</p>
+                                        <p className='font-medium'>{dayjs(project?.start_date).format('DD/MM/YYYY')}</p>
                                     </div>
                                 </Grid>
                                 <Grid container className="items-center">
                                     <Clock className="mr-5 size-5 text-gray-500"/>
                                     <div>
                                         <span className='text-gray-500'>Due Date</span>
-                                        <p>{project?.due_date}</p>
+                                        <p className='font-medium'>{dayjs(project?.end_date).format('DD/MM/YYYY')}</p>
                                     </div>
                                 </Grid>
                             
@@ -124,14 +134,14 @@ export default function ProjectDetail() {
                                     <User className="mr-5 size-5 text-gray-500"/>
                                     <div>
                                         <span className='text-gray-500'>Assignee</span>
-                                        <p>{teams[project?.assignee]?.name}</p>
+                                        <p className='font-medium'>{teams[project?.assignee]?.name}</p>
                                     </div>
                                 </Grid>
                                 <Grid container className="items-center">
                                     <Tag className="mr-5 size-5 text-gray-500"/>
                                     <div>
                                         <span className='text-gray-500'>Client</span>
-                                        <p>{companies[project?.client]?.name}</p>
+                                        <p className='font-medium'>{customers[project?.client]?.name}</p>
                                     </div>
                                 </Grid>
                             </Stack>
@@ -141,16 +151,16 @@ export default function ProjectDetail() {
 
                             <Stack spacing={2}>
                                 <Grid container justifyContent='space-between'>
-                                    <span>Total Budget</span>
-                                    <p>{formatCurrency(project?.budget?.total)}</p>
+                                    <span className='text-gray-500'>Total Budget</span>
+                                    <p className='font-medium'>{formatCurrency(project?.budget?.estimated)}</p>
                                 </Grid>
                                 <Grid container justifyContent='space-between'>
-                                    <span>Spent</span>
-                                    <p>{formatCurrency(project?.budget?.used)}</p>
+                                    <span className='text-gray-500'>Spent</span>
+                                    <p className='font-medium'>{formatCurrency(project?.budget?.used)}</p>
                                 </Grid>
                                 <Grid container justifyContent='space-between'>
-                                    <span>Remaining</span>
-                                    <p>{formatCurrency((project?.budget?.total - project?.budget?.used) || 0)}</p>
+                                    <span className='text-gray-500'>Remaining</span>
+                                    <p className='font-medium'>{formatCurrency((project?.budget?.estimated - project?.budget?.used) || 0)}</p>
                                 </Grid>
                             </Stack>
                     </Card>

@@ -14,7 +14,7 @@ export const TableList = (props) => {
         <DataGrid
           apiRef={apiRef}
           columns={columns}
-          loading={filteredData.length === 0}
+          // loading={filteredData.length === 0}
           rows={filteredData.map((row, index) => ({
             ...row,
             id: row.id ?? `row-${index}`,
