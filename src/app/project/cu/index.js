@@ -1,15 +1,15 @@
 'use client';
 
-import { Box, Grid } from "@mui/material"
+import { Grid } from "@mui/material"
 import { FormControl, FormLabel, Input, Textarea, List, ListItem, ListDivider, Sheet, Select, 
-         Option, Drawer, IconButton } from "@mui/joy"
+         Option, IconButton } from "@mui/joy"
 import { KeyboardArrowDown, Edit, Delete, Check } from '@mui/icons-material';
 import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
 
-import { useDrawer, MainButton } from "@/components";
+import { useDrawer, MainButton, DrawerWrapper } from "@/components";
 
-import { BTN_STYLE, PROJECT_PRIORITY } from "@/constants";
+import { PROJECT_PRIORITY } from "@/constants";
 
 import { project } from "@/services/redux/actions";
 
@@ -19,7 +19,7 @@ export default function ProjectCU() {
 
     const dispatch = useDispatch()
 
-    const { toggleDrawer, openDrawer, data, updateData } = useDrawer();
+    const { toggleDrawer, data, updateData } = useDrawer();
 
     const customers = Object.values(useSelector((state) => state.customer.byID));
     const teams = Object.values(useSelector((state) => state.team.byID));
@@ -70,7 +70,7 @@ export default function ProjectCU() {
             e.preventDefault();
             
             if(action === 'edit'){
-                const { action, budget, ...rest } = values
+                const { action, budget, client_name, assignee_name, ...rest } = values
                 dispatch(project.update_project_request(rest))
             } else {
                 const { action, ...rest } = values
@@ -124,14 +124,15 @@ export default function ProjectCU() {
     };
 
     return (
-        <Drawer open={openDrawer} anchor="right" onClose={onClose}>
-            <Box
-                sx={{ width: 450, p: 3, height: '90%' }}
-                >
+        <DrawerWrapper
+            drawerTitle={
+                <div>
                     <h2 className="font-bold text-xl">{action === 'edit' ? 'Edit Project' : 'Add New Project'}</h2>
-                    <p>{action === 'edit' ? `Update details for ${data?.name}` : 'Add a new customer to your client database' }</p>
-
-                    <form autoComplete="off" onSubmit={handleSubmit} className="flex flex-col h-full justify-between mt-8">
+                    <p className="font-normal text-sm">{action === 'edit' ? `Update details for ${data?.name}` : 'Add a new customer to your client database' }</p>
+                </div>
+            }
+            drawerContent={
+                <form autoComplete="off" onSubmit={handleSubmit} className="flex flex-col h-full justify-between mt-8">
 
                         <Grid container spacing={2}>  
                             <Grid size={12} item>
@@ -223,10 +224,10 @@ export default function ProjectCU() {
                                 <FormControl required>
                                     <FormLabel sx={{ fontWeight: 600 }}>Estimated Budget</FormLabel>
                                     <Input
-                                        type="number"
                                         variant="plain"
+                                        type="number"
                                         startDecorator="$"
-                                        value={values.budget}
+                                        value={values?.budget || 0}
                                         onChange={handleChange}
                                         name="budget"
                                         className="border border-gray-200"
@@ -324,14 +325,10 @@ export default function ProjectCU() {
                                 }
                             </Grid>
                         </Grid>
-
-                        <div style={{ display: 'flex', gap: 10, textAlign: "right", marginTop: 20 }}>
-                            <MainButton type="submit" title='Submit' />
-                            <MainButton variant="outlined" onClick={onClose} title='Cancel' style={{...BTN_STYLE.outlined }}/>
-                        </div>
-
                     </form>
-                </Box>
-        </Drawer>
+            }
+            onClose={onClose}
+            onSubmit={handleSubmit}
+        />
     )
 }

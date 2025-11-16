@@ -17,15 +17,15 @@ export default function ModalUpdateTask() {
   const { open, handleOpen, content } = useModal();
 
   const [checked, setChecked] = useState(content?.tasks || []);
-  const [spent, setSpent] = useState(content?.spending || 0);
+  const [spent, setSpent] = useState(content?.budget?.used || 0);
 
   useEffect(() => {
     setChecked(content?.tasks || [])
-    setSpent(content?.spending || 0)
+    setSpent(content?.budget?.used || 0)
   }, [content])
   
   const handleConfirm = () => {
-    dispatch(project.update_project_request({ ...content, tasks: checked }))
+    dispatch(project.update_project_request({ ...content, tasks: checked, used: spent }))
     handleOpen()
   }
 
@@ -51,12 +51,12 @@ export default function ModalUpdateTask() {
           </Typography>
 
           <Typography level="h5" sx={{ fontWeight: '500' }}>
-            Total Spending
+            Total budget used
           </Typography>
           <Input
             type="number"
             variant="outlined"
-            value={content?.spending || ''}
+            value={spent}
             onChange={(e) => setSpent(e.target.value)}
             startDecorator="$"
           />

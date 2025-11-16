@@ -62,7 +62,7 @@ export default function Customers() {
   const filteredData = dataSource(filteredInfo)
 
   return (
-    <div>
+    <div style={{ width: '100%'}}>
         <Box sx={{ boxShadow: 'none' }} className='px-6 pb-6'>
 
                 <Grid container justifyContent='space-between' className="mb-4">

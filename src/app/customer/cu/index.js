@@ -1,17 +1,14 @@
 'use client';
 
-import { Box, Grid } from "@mui/material"
-import { FormControl, FormLabel, Input, Textarea, Drawer } from "@mui/joy"
+import { Grid } from "@mui/material"
+import { FormControl, FormLabel, Input, Textarea } from "@mui/joy"
 import { useState, useEffect } from "react"
 import { useDispatch } from "react-redux";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
-// import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
 
-import { useDrawer, MainButton } from "@/components";
-
-import { BTN_STYLE } from "@/constants";
+import { useDrawer, DrawerWrapper } from "@/components";
 
 import { customer } from "@/services/redux/actions";
 
@@ -21,7 +18,7 @@ export default function CustomerCU() {
 
     const dispatch = useDispatch()
 
-    const { toggleDrawer, openDrawer, data, updateData } = useDrawer();
+    const { toggleDrawer, data, updateData } = useDrawer();
 
     const { action } = data || {}
 
@@ -73,15 +70,17 @@ export default function CustomerCU() {
     };
 
     return (
-        <Drawer open={openDrawer} anchor="right" onClose={onClose}>
-            <Box
-                sx={{ width: 450, p: 3, height: '90%' }}
-                >
-                    <h2 className="font-bold text-xl">{action === 'edit' ? 'Edit Customer' : 'Add New Customer'}</h2>
-                    <p>{action === 'edit' ? `Update details for ${data?.name}` : 'Add a new customer to your client database' }</p>
-
-                    <form autoComplete="off" onSubmit={handleSubmit} className="flex flex-col h-full justify-between mt-8">
-
+        <DrawerWrapper
+            onClose={onClose}
+            onSubmit={handleSubmit}
+            drawerTitle={
+                <div>
+                    <h2 className="font-bold text-xl">{action === 'edit' ? 'Edit Customer' : 'Addn New Customer'}</h2>
+                    <p className="font-normal text-sm">{action === 'edit' ? `Update details for ${data?.name}` : 'Add a new customer to your client database' }</p>
+                </div>
+            }
+            drawerContent={
+                 <form autoComplete="off" onSubmit={handleSubmit} className="flex flex-col h-full justify-between mt-8">
                         <Grid container spacing={2}>  
                             <Grid size={12} item>
                                 <FormControl required>
@@ -158,14 +157,8 @@ export default function CustomerCU() {
                                 </FormControl>
                             </Grid>
                         </Grid>
-
-                        <div style={{ display: 'flex', gap: 10, textAlign: "right", marginTop: 20 }}>
-                            <MainButton type="submit" title='Submit' />
-                            <MainButton variant="outlined" onClick={onClose} title='Cancel' style={{...BTN_STYLE.outlined }}/>
-                        </div>
-
                     </form>
-                </Box>
-        </Drawer>
+            }
+        />
     )
 }

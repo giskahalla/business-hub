@@ -3,6 +3,7 @@
 import { Box, Avatar, Typography } from '@mui/material';
 import { Chip } from '@mui/joy';
 import dayjs from 'dayjs';
+import { Building, Phone } from 'lucide-react';
 
 import { CUSTOMER_STATUS } from '@/constants';
 
@@ -30,12 +31,6 @@ export const CUSTOMER_COLUMN = [
     }
   },
   { 
-    field: 'company', 
-    headerName: 'Company', 
-    width: 200,
-    sortable: false,
-  },
-  { 
     field: 'status', 
     headerName: 'Status', 
     width: 130,
@@ -50,6 +45,36 @@ export const CUSTOMER_COLUMN = [
     }
   },
   { 
+    field: 'company', 
+    headerName: 'Company', 
+    width: 200,
+    sortable: false,
+    renderCell: (rec) => { 
+      const { row } = rec
+      return (
+        <div className='flex items-center gap-2' style={{ height: '100%', alignContent: 'center'}}>
+            <Building size={16}/>
+            <span>{row.company}</span>
+        </div>
+      )
+    }
+  },
+  { 
+    field: 'contact', 
+    headerName: 'Contact', 
+    width: 200,
+    sortable: false,
+    renderCell: (rec) => { 
+      const { row } = rec
+      return (
+        <div className='flex items-center gap-2' style={{ height: '100%', alignContent: 'center'}}>
+            <Phone size={16}/>
+            <span>{row.contact}</span>
+        </div>
+      )
+    }
+  },
+  { 
     field: 'total', 
     headerName: 'Total Spent', 
     width: 130,
@@ -57,7 +82,7 @@ export const CUSTOMER_COLUMN = [
     renderCell: (rec) => {
       const { row } = rec
       return (
-        <>{formatCurrency(row?.spent)}</>
+        <>$ {formatCurrency(row?.spent)}</>
       )
     }
   },

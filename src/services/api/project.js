@@ -13,11 +13,11 @@ export const getProjectThruUserID = async (id) => {
 }
 
 export const createProject = async (data) => {
-  const response = await axios.post(`${CONFIG.API_BASE_URL}/create/project`, { data });
+  const response = await axios.post(`${CONFIG.API_BASE_URL}/create/project`, data);
   return response.data;
 }
 
 export const updateProject = async (data) => {
-  const response = await axios.post(`${CONFIG.API_BASE_URL}/update/project`, { data });
+  const response = await axios.post(`${CONFIG.API_BASE_URL}/update/project`, data);
   return response.data;
 }

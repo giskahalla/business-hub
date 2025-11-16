@@ -19,16 +19,16 @@ export const CUSTOMER_STATUS = {
   // },
 };
 
-export const STATUS_UPDATE_CONTENT = (row, status) => {
+export const STATUS_UPDATE_CUSTOMER_CONTENT = (row, status) => {
   const statusContent = {
     active: {
-      title: 'Mark as Active',
+      title: 'Mark as active',
       desc: `Are you sure you want to mark ${row.name} as active? This change will update their status to active.`,
       type: 'customer',
       data: {...row, status: 1}
     },
     inactive: {
-      title: 'Mark as Inactive',
+      title: 'Mark as inactive',
       desc: `Are you sure you want to mark ${row.name} as inactive? This change will remove them from the active list.`,
       type: 'customer',
       data: {...row, status: 2}

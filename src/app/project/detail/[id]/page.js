@@ -1,8 +1,8 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { ArrowLeft, Clock, Mail, Phone, Calendar, Edit, Tag, User } from 'lucide-react';
-import { Card, Divider, Grid, Stack, Typography } from "@mui/material";
+import { ArrowLeft, Clock, Calendar, Edit, Tag, User } from 'lucide-react';
+import { Card, Divider, Grid, Stack, Typography, Badge } from "@mui/material";
 import { Chip, LinearProgress } from '@mui/joy';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
@@ -86,24 +86,18 @@ export default function ProjectDetail() {
                     </Card>
 
                     <Card variant='outlined' style={{ boxShadow: '0 0 3px 0 rgba(0, 0, 0, 0.1)' }} className="m-6 p-6">
-                            <h2 className="text-lg font-semibold mb-4">Pending Tasks</h2>
+                            <h2 className="text-lg font-semibold mb-4">Pending Tasks ({ project?.tasks?.filter(p => !p.status)?.length || 0})</h2>
 
-                            <Stack spacing={2}>
-                                <Grid container className="flex items-center">
-                                    <Mail className="mr-5 size-5 text-gray-500"/>
-                                    <div>
-                                        <span className='text-gray-500'>Email</span>
-                                        <p className='font-medium'>{project?.email}</p>
-                                    </div>
-                                </Grid>
-                                <Grid container className="flex items-center" >
-                                    <Phone className="mr-5 size-5 text-gray-500"/>
-                                    <div>  
-                                        <span className='text-gray-500'>Phone</span>
-                                        <p className='font-medium'>{project?.contact}</p>
-                                    </div>
-                                </Grid>
-                            </Stack>
+                                {project?.tasks?.filter(p => !p.status).map((p, i) => {
+                                    return (
+                                        <Card key={i} variant='plain' className="p-4">
+                                            <Grid container alignItems='center'>
+                                                <Badge color='warning' variant="dot"></Badge>
+                                                <span className="text-md ml-4">{p.title}</span>
+                                            </Grid>
+                                        </Card>
+                                    )}
+                                )}
                     </Card>
                 </Stack>
             </Grid>

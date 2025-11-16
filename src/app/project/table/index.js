@@ -13,7 +13,7 @@ const columns = [
   { 
     field: 'action', 
     headerName: 'Action', 
-    width: 75,
+    width: 85,
     renderCell: (rec) => {
       const { row } = rec
       return (

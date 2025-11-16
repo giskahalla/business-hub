@@ -14,14 +14,14 @@ export const PROJECT_COLUMN = [
     headerName: 'Project', 
     sortable: false,
     width: 200, 
-    renderCell: (rec) => {
+    renderCell: (rec) => { 
       const { row } = rec
       return (
         <div style={{ height: '100%', display: 'flex', alignItems: 'center'}}>
           <Stack>
             <Typography variant="subtitle2">{row.name}</Typography>
             <Typography variant="body2" color="text.secondary">
-              {row.company_name}
+              {row.client_name}
             </Typography>
           </Stack>
         </div>
@@ -84,7 +84,10 @@ export const PROJECT_COLUMN = [
     renderCell: (rec) => {
       const { row } = rec
       return (
-        <>{formatCurrency(row?.budget?.total)}</>
+        <div style={{ height: '100%', alignContent: 'center' }}>
+          <Typography variant="subtitle2">{formatCurrency(row?.budget?.used) || 0}</Typography>
+          <Typography variant="body2" color="text.secondary">of {formatCurrency(row?.budget?.estimated)}</Typography>
+        </div>
       )
     }
   },

@@ -7,7 +7,7 @@ import { KeyboardArrowDown } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
-import { MainButton, useDrawer } from '@/components';
+import { MainButton, useDrawer, ModalStatus, useModal } from '@/components';
 import ProjectTable from './table';
 import ProjectCU from './cu';
 import ModalUpdateTask from './modalUpdateTask';
@@ -20,7 +20,7 @@ import { project, customer, team } from '@/services/redux/actions';
 
 const dataSource = (filteredInfo) => {
   const projects = Object.values(useSelector((state) => state.project.byID));
-  const companies = useSelector((state) => state.company.byID);
+  const customers = useSelector((state) => state.customer.byID);
   const teams = useSelector((state) => state.team.byID);
 
   if (projects?.length === 0) {
@@ -29,7 +29,7 @@ const dataSource = (filteredInfo) => {
 
   let data = projects.map((p) => ({
     ...p,
-    company_name: companies[p.client]?.name || 'N/A',
+    client_name: customers[p.client]?.name || 'N/A',
     assignee_name: teams[p.assignee]?.name || '-',
   }))
   
@@ -39,6 +39,7 @@ const dataSource = (filteredInfo) => {
 export default function Projects() {
 
   const { toggleDrawer } = useDrawer();
+  const { content } = useModal()
   const dispatch = useDispatch();
 
   const [filteredInfo, setFilteredInfo] = useState({ status: 'all', priority: 'all' })
@@ -50,7 +51,6 @@ export default function Projects() {
   }, [dispatch]);
 
   const filteredData = dataSource(filteredInfo)
-  console.log('filteredData', filteredData)
 
   return (
     <div>
@@ -112,7 +112,10 @@ export default function Projects() {
 
          <ProjectTable filteredData={filteredData} sort='due_date'/>
          <ProjectCU />
-         <ModalUpdateTask />
+         {content?.type ?
+          <ModalStatus /> :
+          <ModalUpdateTask />
+         }
     </div>
   );
 }

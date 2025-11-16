@@ -1,5 +1,6 @@
-update 02/11/25
+update 16/11/25
 
-- Add team module with table and detail views
-- Update functionality for project creation/edit form and update tasks & budget management
-- Refine customer details management
+- Optimize page layout
+- Make the create/update drawer reusable
+- Add companies page (table view)
+- Implement status marking in projects and update logic related to progress and budget usage

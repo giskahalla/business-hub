@@ -10,7 +10,7 @@ export const TableList = (props) => {
   const { filteredData, apiRef, sort, columns } = props
 
   return (
-      <Box sx={{ height: 400, width: 1150 }}>
+      <Box sx={{ height: 400, width: '100%'}}>
         <DataGrid
           apiRef={apiRef}
           columns={columns}

@@ -46,3 +46,21 @@ export const PROJECT_PRIORITY = {
   },
 };
 
+export const STATUS_UPDATE_PROJECT_CONTENT = (row, status) => {
+  const statusContent = {
+    paused: {
+      title: 'Mark as paused',
+      desc: `Are you sure you want to mark ${row.name} as paused? This change will update the project status to paused.`,
+      type: 'project',
+      data: {...row, status: 0}
+    },
+    cancelled: {
+      title: 'Mark as cancelled',
+      desc: `Are you sure you want to mark ${row.name} as cancelled? This change will update the project status to cancelled.`,
+      type: 'project',
+      data: {...row, status: 3}
+    },
+  };
+
+  return statusContent[status]; 
+}

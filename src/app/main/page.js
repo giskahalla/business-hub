@@ -15,19 +15,19 @@ export default function Main({ children }) {
 
   return (
     <Provider store={store}>
-        <div className="flex flex-row justify-center">
-        <div className="h-screen">
-            <Sidebar />
-        </div>
-        <div className="flex-1 h-screen">
-            <DrawerProvider>
-            <ModalProvider>
-              <Suspense fallback={<CircularProgress />}>
-                {children}
-              </Suspense>
-            </ModalProvider>
-            </DrawerProvider>
-        </div>
+        <div className="flex">
+          <div className="h-screen w-1/5">
+              <Sidebar />
+          </div>
+          <div className="w-4/5">
+              <DrawerProvider>
+              <ModalProvider>
+                <Suspense fallback={<CircularProgress />}>
+                  {children}
+                </Suspense>
+              </ModalProvider>
+              </DrawerProvider>
+          </div>
         </div>
     </Provider>
   );
