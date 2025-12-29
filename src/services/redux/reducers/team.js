@@ -16,18 +16,18 @@ export const team = (state = initialState, action) => {
           },
         };
     }
-    // case 'UPDATE_CUSTOMER': {
-    //     const { customer } = action;
-    //     const { id } = customer
+    case 'UPDATE_TEAM': {
+        const { team } = action;
+        const { id } = team
 
-    //     return {
-    //       ...state,
-    //       byID: {
-    //         ...state.byID,
-    //         [id]: customer
-    //       },
-    //     };
-    // }
+        return {
+          ...state,
+          byID: {
+            ...state.byID,
+            [id]: team
+          },
+        };
+    }
     default:
       return state;
   }

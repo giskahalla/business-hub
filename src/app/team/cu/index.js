@@ -10,7 +10,7 @@ import 'react-international-phone/style.css';
 
 import { useDrawer, DrawerWrapper } from "@/components";
 
-import { customer } from "@/services/redux/actions";
+import { team } from "@/services/redux/actions";
 
 import '../../globals.css';
 
@@ -47,8 +47,21 @@ export default function MemberCU() {
         setValues({ ...values, [name]: value});
     };
 
-    const handleChangePhone = (val) => {
-        setValues({ ...values, contact: val});
+    const handleChangePhone = (value, countryData) => {
+        const countryCode = countryData.dialCode;
+
+        if (value) {
+        const formattedPhone = `+${countryCode} ${value.slice(countryCode.length)}`;
+        setValues({
+            ...values,
+            contact: formattedPhone,
+        });
+        } else {
+        setValues({
+            ...values,
+            contact: '',
+        });
+        }
     };
 
     const onClose =  () => {
@@ -61,9 +74,9 @@ export default function MemberCU() {
         e.preventDefault();
         const { action, ...rest } = values
         if(action === 'edit'){
-            dispatch(customer.update_customer_request(rest))
+            dispatch(team.update_team_request(rest))
         } else {
-            dispatch(customer.create_customer_request(rest))
+            dispatch(team.create_team_request(rest))
         }
         onClose()
     };

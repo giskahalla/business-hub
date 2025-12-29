@@ -1,6 +1,4 @@
-update 16/11/25
+update 29/12/25
 
-- Optimize page layout
-- Make the create/update drawer reusable
-- Add companies page (table view)
-- Implement status marking in projects and update logic related to progress and budget usage
+- Develop dashboard page (summaries and charts)
+- implement update team function

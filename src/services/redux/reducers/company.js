@@ -16,18 +16,18 @@ export const company = (state = initialState, action) => {
           },
         };
     }
-    // case 'UPDATE_CUSTOMER': {
-    //     const { customer } = action;
-    //     const { id } = customer
+    case 'UPDATE_COMPANY': {
+        const { company } = action;
+        const { id } = company
 
-    //     return {
-    //       ...state,
-    //       byID: {
-    //         ...state.byID,
-    //         [id]: customer
-    //       },
-    //     };
-    // }
+        return {
+          ...state,
+          byID: {
+            ...state.byID,
+            [id]: company
+          },
+        };
+    }
     default:
       return state;
   }

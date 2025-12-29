@@ -19,7 +19,7 @@ export const MEMBER_STATUS = {
   },
 };
 
-export const STATUS_UPDATE_CONTENT = (row, status) => {
+export const STATUS_UPDATE_TEAM_CONTENT = (row, status) => {
   const statusContent = {
     active: {
       title: 'Mark as Active',

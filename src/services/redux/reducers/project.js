@@ -1,7 +1,8 @@
 
 const initialState = {
   byID: {},
-  byUserID: []
+  byUserID: [],
+  summary: {}
 };
 
 export const project = (state = initialState, action) => {
@@ -35,6 +36,14 @@ export const project = (state = initialState, action) => {
             ...state.byID,
             [id]: project
           },
+        };
+    }
+    case 'GET_PROJECT_SUMMARY': {
+        const { summaries } = action;
+
+        return {
+          ...state,
+          summary: summaries,
         };
     }
     default:

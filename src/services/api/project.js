@@ -21,3 +21,8 @@ export const updateProject = async (data) => {
   const response = await axios.post(`${CONFIG.API_BASE_URL}/update/project`, data);
   return response.data;
 }
+
+export const getProjectSummary = async (year) => {
+  const response = await axios.get(`${CONFIG.API_BASE_URL}/get/projects/summary`,  {params: { year }} );
+  return response.data;
+}

@@ -1,12 +1,13 @@
 'use client';
 
 import { Grid } from "@mui/material"
-import { FormControl, FormLabel, Input, Textarea } from "@mui/joy"
+import { FormControl, FormLabel, Input, Textarea, Select, Option } from "@mui/joy"
 import { useState, useEffect } from "react"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import 'react-international-phone/style.css';
+import { KeyboardArrowDown } from '@mui/icons-material';
 
 import { useDrawer, DrawerWrapper } from "@/components";
 
@@ -17,6 +18,8 @@ import '../../globals.css';
 export default function CustomerCU() {
 
     const dispatch = useDispatch()
+
+    const companies = Object.values(useSelector((state) => state.company.byID));
 
     const { toggleDrawer, data, updateData } = useDrawer();
 
@@ -48,8 +51,21 @@ export default function CustomerCU() {
         setValues({ ...values, [name]: value});
     };
 
-    const handleChangePhone = (val) => {
-        setValues({ ...values, contact: val});
+    const handleChangePhone = (value, countryData) => {
+        const countryCode = countryData.dialCode;
+
+        if (value) {
+        const formattedPhone = `+${countryCode} ${value.slice(countryCode.length)}`;
+        setValues({
+            ...values,
+            contact: formattedPhone,
+        });
+        } else {
+        setValues({
+            ...values,
+            contact: '',
+        });
+        }
     };
 
     const onClose =  () => {
@@ -100,15 +116,19 @@ export default function CustomerCU() {
                             <Grid size={12} item>
                                 <FormControl required>
                                     <FormLabel sx={{ fontWeight: 600 }}>Company</FormLabel>
-                                    <Input
+                                     <Select
+                                        indicator={<KeyboardArrowDown />} 
                                         variant="plain"
-                                        placeholder="Enter company name"
                                         name="company"
                                         value={values.company}
-                                        onChange={handleChange}
-                                        className="border border-gray-200"
-                                        sx={{ '--Input-minHeight': '50px', '--Input-radius': '6px' }}
-                                    />
+                                        onChange={(e, val) => {
+                                            setValues({ ...values, company: val});
+                                        }}
+                                    >
+                                        {companies.map((s) => (
+                                            <Option value={s.id} key={s.id}>{s.name}</Option>
+                                        ))}
+                                    </Select>
                                 </FormControl>
                             </Grid>
 
@@ -132,13 +152,19 @@ export default function CustomerCU() {
                                 <FormControl required>
                                     <FormLabel sx={{ fontWeight: 600 }}>Phone Number</FormLabel>
                                     <PhoneInput
-                                        inputProps={{
-                                            required: true
-                                        }}
+                                        inputProps={{ required: true }}
                                         value={values.contact}
                                         onChange={handleChangePhone}
-                                        inputStyle={{ height: 50, width: '100%', background: '#fbfcfe', borderColor: '#ebe6e7' }}
-                                        buttonStyle={{ background: '#fbfcfe', borderColor: '#ebe6e7' }}
+                                        inputStyle={{
+                                            height: 50,
+                                            width: '100%',
+                                            background: '#fbfcfe',
+                                            borderColor: '#ebe6e7',
+                                        }}
+                                        buttonStyle={{
+                                            background: '#fbfcfe',
+                                            borderColor: '#ebe6e7',
+                                        }}
                                     />
                                 </FormControl>
                             </Grid>

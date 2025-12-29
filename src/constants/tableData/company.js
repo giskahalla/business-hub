@@ -19,9 +19,9 @@ export const COMPANY_COLUMN = [
         <div style={{ height: '100%', display: 'flex', alignItems: 'center'}}>
         <Building2 size={16}/>
           <Box ml={2}>
-            <Typography variant="subtitle2">{row.name}</Typography>
+            <Typography variant="subtitle2">{row?.name}</Typography>
             <Typography variant="body2" color="text.secondary">
-              {row.address}
+              {row?.address}
             </Typography>
           </Box>
         </div>
@@ -58,19 +58,19 @@ export const COMPANY_COLUMN = [
       return (
         <div className='flex items-center gap-2'>
             <Users size={16}/>
-            {row.employees?.length || '-'}
+            {row?.employees?.length || '-'}
         </div>
       )
     }
   },
   { 
-    field: 'joinedAt', 
+    field: 'yop', 
     headerName: 'Established', 
     width: 130,
     renderCell: (rec) => {
       const { row } = rec
       return (
-        <>{dayjs(row?.joinedAt).format('DD/MM/YYYY')}</>
+        <>{row.yop}</>
       )
     },
     sortable: true,
@@ -85,15 +85,15 @@ export const COMPANY_COLUMN = [
       return (
         <div style={{ height: '100%', alignContent: 'center' }}>
             <Typography variant="body2">
-                {row.contact.name || '-'}
+                {row?.contact?.name || '-'}
             </Typography>
             <Typography variant="body2" color='text.secondary' className='flex items-center gap-2'>
                 <Mail size={14}/>
-                {row.contact.email || '-'}
+                {row?.contact?.email || '-'}
             </Typography>
             <Typography variant="body2" color='text.secondary' className='flex items-center gap-2'>
                 <Phone size={14}/>
-                {row.contact.phone || '-'}
+                {row?.contact?.phone || '-'}
             </Typography>
         </div>
       )

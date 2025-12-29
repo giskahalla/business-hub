@@ -15,16 +15,20 @@ import { CUSTOMER_STATUS, BTN_STYLE, CUSTOMER_COLUMN } from '@/constants';
 
 import { calculateSummary, formatCurrency, tableFilter, handleExportExcel } from '@/handler';
 
-import { customer } from '@/services/redux/actions';
+import { customer, company } from '@/services/redux/actions';
 
 const dataSource = (filteredInfo) => {
   const customers = Object.values(useSelector((state) => state.customer.byID));
+  const company = useSelector((state) => state.company.byID)
 
   if (customers?.length === 0) {
     return []; 
   }
 
-  let data = customers
+  let data = customers.map((cust) => ({
+    ...cust,
+    company_name: company?.[cust.company]?.name || '-',
+  }));
   
   return tableFilter(data, filteredInfo)
 }
@@ -40,6 +44,7 @@ export default function Customers() {
 
   useEffect(() => {
     dispatch(customer.get_customers_request());
+    dispatch(company.get_companies_request());
   }, [dispatch]);
 
   const cards = [ 

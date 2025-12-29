@@ -54,7 +54,7 @@ export const CUSTOMER_COLUMN = [
       return (
         <div className='flex items-center gap-2' style={{ height: '100%', alignContent: 'center'}}>
             <Building size={16}/>
-            <span>{row.company}</span>
+            <span>{row.company_name}</span>
         </div>
       )
     }
@@ -99,14 +99,14 @@ export const CUSTOMER_COLUMN = [
     }
   }, 
   { 
-    field: 'updatedAt', 
+    field: 'createdAt', 
     headerName: 'Last Update', 
     width: 130,
     sortable: true,
     renderCell: (rec) => {
       const { row } = rec
       return (
-        <>{dayjs(row?.updatedAt).format('DD/MM/YYYY')}</>
+        <>{dayjs(row?.createdAt).format('DD/MM/YYYY')}</>
       )
     }
   },

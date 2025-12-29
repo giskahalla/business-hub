@@ -69,3 +69,21 @@ const update_project_success = (project) => {
     }
 };
 
+export const get_project_summmary_request = (year) => async (dispatch) => {
+  API.getProjectSummary(year)
+  .then((info) => {
+    const { summaries } = info;
+    dispatch(get_project_summary_success(summaries));
+  }).catch((error) => {
+    console.error("Error fetching projects", error.message);
+      MessageEvent({ severity: 'error', children: <Alert severity="error">{error}</Alert> });
+  });
+}
+
+const get_project_summary_success = (summaries) => {
+    return {
+        type: "GET_PROJECT_SUMMARY",
+        summaries
+    }
+};
+

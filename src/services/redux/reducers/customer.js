@@ -1,6 +1,7 @@
 
 const initialState = {
-  byID: {}
+  byID: {},
+  summary: {}
 };
 
 export const customer = (state = initialState, action) => {
@@ -26,6 +27,14 @@ export const customer = (state = initialState, action) => {
             ...state.byID,
             [id]: customer
           },
+        };
+    }
+    case 'GET_CUSTOMER_SUMMARY': {
+        const { summaries } = action;
+
+        return {
+          ...state,
+          summary: summaries,
         };
     }
     default:
